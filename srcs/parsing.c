@@ -6,20 +6,69 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 12:12:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/17 16:33:13 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	free_folders(char **result, int i)
+void	init_pipes(t_pipex *p)
 {
-	while (i >= 0)
+	int	i;
+
+	p->pipes = malloc(sizeof(int *) * (p->nb_cmds - 1));
+	if (!p->pipes)
 	{
-		free(result[i]);
-		i--;
+		perror("malloc pipes");
+		exit (1);
 	}
-	free(result);
+	i = 0;
+	while (i < p->nb_cmds - 1)
+	{
+		p->pipes[i] = malloc(sizeof(int) * 2);
+		if (!p->pipes[i])
+		{
+			perror("malloc pipe pair");
+			exit (1);
+		}
+		if (pipe(p->pipes[i]) == -1)
+		{
+			perror("pipe");
+			exit (1);
+		}
+		i++;
+	}
+}
+
+void	init_cmds(t_pipex *p, char *av[])
+{
+	int	i;
+
+	p->cmds = malloc(sizeof(char *) * (p->nb_cmds + 1));
+	if (!p->cmds)
+	{
+		perror("malloc cmds");
+		exit (1);
+	}
+	i = 0;
+	while (i < p->nb_cmds)
+	{
+		p->cmds[i] = av[i + 2];
+		i++;
+	}
+	p->cmds[i] = NULL;
+}
+
+void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[])
+{
+	p->envp = envp;
+	p->nb_cmds = ac - 3;
+	p->fd_infile = open_infile(av[1]);
+	p->fd_outfile = open_outfile(av[ac - 1]);
+	if (p->fd_infile < 0 || p->fd_outfile < 0)
+		exit(1);
+	init_pipes(p);
+	init_cmds(p, av);
 }
 
 char	*check_path(char **path_folders, char *cmd)
@@ -33,17 +82,16 @@ char	*check_path(char **path_folders, char *cmd)
 	{
 		tmp = ft_strjoin(path_folders[i], "/");
 		if (!tmp)
-			return (free_folders(path_folders, i), NULL);
+			return (NULL);
 		path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (!path)
-			return (free_folders(path_folders, i), NULL);
+			return (NULL);
 		if (access(path, F_OK | X_OK) == 0)
 			return (path);
 		free(path);
 		i++;
 	}
-	free_folders(path_folders, i);
 	return (NULL);
 }
 
@@ -68,6 +116,7 @@ char	*get_path(char *envp[], char *cmd)
 	if (!path_folders)
 		return (NULL);
 	path = check_path(path_folders, cmd);
+	free_tab_chars(path_folders);
 	return (path);
 }
 
@@ -77,6 +126,6 @@ char	**get_args(char *str)
 
 	args = ft_split(str, ' ');
 	if (!args)
-		return (NULL);
+		return (free_tab_chars(args), NULL);
 	return (args);
 }

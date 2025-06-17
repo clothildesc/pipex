@@ -6,72 +6,24 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:38:06 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 12:43:08 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/17 16:38:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-/* int	can_read(char *file)
+int	fork_cmd(int pipefd[], char *cmd, char *envp[])
 {
-	if (access(file, R_OK) == 0)
-		return (1);
-	return (0);
-}
-
-int	can_write(char *file)
-{
-	if (access(file, W_OK) == 0)
-		return (1);
-	return (0);
-} */
-
-int	open_infile(const char *infile)
-{
-	int	fd;
-
-	if (access(infile, F_OK | R_OK) == -1)
-	{
-		perror("access infile");
-		return (-1);
-	}
-	else
-	{
-		fd = open(infile, O_RDONLY);
-		if (fd == -1)
-		{
-			perror("open infile");
-			return (-1);
-		}
-	}
-	return (fd);
-}
-
-int	open_outfile(const char *outfile)
-{
-	int	fd;
-
-	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC);
-	if (fd == -1)
-	{
-		perror("open outfile");
-		return (-1);
-	}
-	return (fd);
-}
-
-void open_files(const char *infile, const char *outfile)
-
-/* void	pipe_and_fork(char *str)
-{
-	int		pipefd[2];
 	pid_t	pid;
+	char	**args;
+	char	*path;
 
-	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		exit(1);
-	}
+	args = get_args(cmd);
+	if (!args)
+		return (free_all(args), -1);
+	path = get_path(envp, args[0]);
+	if (!path)
+		return (free(path), -1);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -82,31 +34,37 @@ void open_files(const char *infile, const char *outfile)
 	{
 		dup2(pipefd[0], 0);
 		close(pipefd[1]);
-		char *args[] = {"/bin/ls", "-l", NULL};
-		execve("/bin/ls", args, envp);
+		execve(args[0], args, envp);
 	}
 	if (pid > 0)
 	{
 		dup2(pipefd[1], 1);
 		close(pipefd[0]);
 	}
-} */
+}
 
+void	pipe_and_fork(char *str)
+{
+	int		pipefd[2];
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		exit(1);
+	}
+}
 
 #include <stdio.h>
 
 int	main(int ac, char *av[], char *envp[])
 {
-	char	**args;
-	char	*cmd;
+	t_pipex	pipex;
 
 	if (ac != 5)
 		return (1);
 	else
-	{
-		args = get_args(av[1]);
-		cmd = args[0];
-		printf("%s\n", get_path(envp, args[0]));
-	}
+		init_pipex(&pipex, ac, av, envp);
+	free_pipes(&pipex);
+	free_cmds(&pipex);
 	return (0);
 }

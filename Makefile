@@ -6,7 +6,7 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/06/17 12:11:22 by cscache          ###   ########.fr        #
+#    Updated: 2025/06/17 16:31:07 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ OBJS_DIR = obj
 
 SRCS_DIR = srcs
 SRCS = $(SRCS_DIR)/main.c \
-		$(SRCS_DIR)/parsing.c
+		$(SRCS_DIR)/parsing.c \
+		$(SRCS_DIR)/files.c \
+		$(SRCS_DIR)/free.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
