@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 10:36:43 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/17 12:15:19 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <stdio.h>
+# include <stdlib.h>
+# include "../libft/libft.h"
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
+//parsing
+void	free_folders(char **result, int i);
+char	*check_path(char **path_folders, char *cmd);
+char	*get_path(char *envp[], char *cmd);
+char	**get_args(char *str);
 
 #endif

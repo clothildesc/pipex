@@ -6,12 +6,12 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/06/17 10:01:54 by cscache          ###   ########.fr        #
+#    Updated: 2025/06/17 12:11:22 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -23,7 +23,8 @@ NAME = pipex
 OBJS_DIR = obj
 
 SRCS_DIR = srcs
-SRCS = $(SRCS_DIR)/main.c 
+SRCS = $(SRCS_DIR)/main.c \
+		$(SRCS_DIR)/parsing.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
