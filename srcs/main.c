@@ -6,11 +6,26 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:38:06 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 11:51:06 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 12:06:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+void	close_pipes_and_files(t_pipex *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->nb_cmds - 1)
+	{
+		close(p->pipes[i][0]);
+		close(p->pipes[i][1]);
+		i++;
+	}
+	close(p->fd_infile);
+	close(p->fd_outfile);
+}
 
 void	execute_child(t_pipex *p, int i)
 {
@@ -41,6 +56,7 @@ void	execute_child(t_pipex *p, int i)
 			dup2(p->pipes[i - 1][0], 0);
 			dup2(p->pipes[i][1], 1);
 		}
+		close_pipes_and_files(p);
 		args = get_args(p->cmds[i]);
 		if (!args)
 			free_struct_and_exit(p);
@@ -72,6 +88,7 @@ void	pipe_and_fork(t_pipex *p)
 		execute_child(p, i);
 		i++;
 	}
+	close_pipes_and_files(p);
 }
 
 #include <stdio.h>
