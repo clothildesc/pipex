@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:24:57 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:56:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 17:02:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void	free_pipes(t_pipex *p)
 void	free_struct_and_exit(t_pipex *p)
 {
 	free_pipes(p);
-	free_cmds(p);
+	if (p->cmds)
+		free(p->cmds);
 	if (p->pids)
-		free_pids(p);
+		free(p->pids);
 	if (p->fd_infile >= 0)
 		close(p->fd_infile);
 	if (p->fd_outfile >= 0)

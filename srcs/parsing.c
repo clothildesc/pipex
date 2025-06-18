@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:55:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 17:56:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*check_path(char **path_folders, char *cmd)
 		free(path);
 		i++;
 	}
+	perror("command not found");
 	return (NULL);
 }
 

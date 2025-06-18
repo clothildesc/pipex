@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:52:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 17:27:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	pipe_and_fork(t_pipex *p)
 {
 	int	i;
 
-	p->pids = malloc(sizeof(t_pipex) * p->nb_cmds);
+	p->pids = malloc(sizeof(pid_t) * p->nb_cmds);
 	if (!p->pids)
 	{
 		perror("pids malloc");
