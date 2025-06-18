@@ -6,7 +6,7 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/06/18 11:52:50 by cscache          ###   ########.fr        #
+#    Updated: 2025/06/18 17:00:32 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,10 @@ OBJS_DIR = obj
 
 SRCS_DIR = srcs
 SRCS = $(SRCS_DIR)/main.c \
+		$(SRCS_DIR)/init_pipex.c \
 		$(SRCS_DIR)/parsing.c \
 		$(SRCS_DIR)/files.c \
+		$(SRCS_DIR)/pipe_and_fork.c \
 		$(SRCS_DIR)/free.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
