@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:24:57 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 10:31:21 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 14:07:28 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,21 @@ void	free_cmds(t_pipex *p)
 		free(p->cmds);
 }
 
+void	free_pids(t_pipex *p)
+{
+	if (p->pids)
+		free(p->pids);
+}
+
 void	free_struct_and_exit(t_pipex *p)
 {
 	free_pipes(p);
 	free_cmds(p);
+	if (p->pids)
+		free_pids(p);
+	if (p->fd_infile >= 0)
+		close(p->fd_infile);
+	if (p->fd_outfile >= 0)
+		close(p->fd_outfile);
 	exit(1);
 }

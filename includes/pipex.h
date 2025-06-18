@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 16:32:14 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 13:32:46 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void	open_files(const char *infile, const char *outfile);
 void	free_tab_chars(char **tab);
 void	free_pipes(t_pipex *p);
 void	free_cmds(t_pipex *p);
+void	free_struct_and_exit(t_pipex *p);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 16:33:13 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 14:05:54 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,20 @@ void	init_cmds(t_pipex *p, char *av[])
 	p->cmds[i] = NULL;
 }
 
+void	init_struct(t_pipex *p)
+{
+	p->fd_infile = -1;
+	p->fd_outfile = -1;
+	p->nb_cmds = 0;
+	p->pipes = NULL;
+	p->pids = NULL;
+	p->cmds = NULL;
+	p->envp = NULL;
+}
+
 void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[])
 {
+	init_struct(p);
 	p->envp = envp;
 	p->nb_cmds = ac - 3;
 	p->fd_infile = open_infile(av[1]);
