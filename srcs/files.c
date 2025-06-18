@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:37:36 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 16:03:17 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 16:55:09 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,4 @@ int	open_outfile(const char *outfile)
 		return (-1);
 	}
 	return (fd);
-}
-
-void	open_files(const char *infile, const char *outfile)
-{
-	int	fd_in;
-	int	fd_out;
-
-	fd_in = open_infile(infile);
-	fd_out = open_outfile(outfile);
-	if (fd_in < 0 || fd_out < 0)
-		exit(1);
 }
