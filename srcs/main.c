@@ -6,51 +6,71 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:38:06 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/17 16:38:04 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/18 11:51:06 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-int	fork_cmd(int pipefd[], char *cmd, char *envp[])
+void	execute_child(t_pipex *p, int i)
 {
 	pid_t	pid;
 	char	**args;
-	char	*path;
+	char	*cmd_path;
 
-	args = get_args(cmd);
-	if (!args)
-		return (free_all(args), -1);
-	path = get_path(envp, args[0]);
-	if (!path)
-		return (free(path), -1);
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		exit(1);
+		free_struct_and_exit(p);
 	}
 	if (pid == 0)
 	{
-		dup2(pipefd[0], 0);
-		close(pipefd[1]);
-		execve(args[0], args, envp);
+		if (i == 0)
+		{
+			dup2(p->fd_infile, 0);
+			dup2(p->pipes[i][1], 1);
+		}
+		else if (i == p->nb_cmds - 1)
+		{
+			dup2(p->pipes[i - 1][0], 0);
+			dup2(p->fd_outfile, 1);
+		}
+		else
+		{
+			dup2(p->pipes[i - 1][0], 0);
+			dup2(p->pipes[i][1], 1);
+		}
+		args = get_args(p->cmds[i]);
+		if (!args)
+			free_struct_and_exit(p);
+		cmd_path = get_path(p->envp, args[0]);
+		if (!cmd_path)
+			return (free_all(args), free_struct_and_exit(p));
+		execve(cmd_path, args, p->envp);
+		perror("execve");
+		free(cmd_path);
+		free_all(args);
+		free_struct_and_exit(p);
 	}
-	if (pid > 0)
-	{
-		dup2(pipefd[1], 1);
-		close(pipefd[0]);
-	}
+	p->pids[i] = pid;
 }
 
-void	pipe_and_fork(char *str)
+void	pipe_and_fork(t_pipex *p)
 {
-	int		pipefd[2];
+	int	i;
 
-	if (pipe(pipefd) == -1)
+	p->pids = malloc(sizeof(t_pipex) * p->nb_cmds);
+	if (!p->pids)
 	{
-		perror("pipe");
-		exit(1);
+		perror("pids malloc");
+		free_struct_and_exit(p);
+	}
+	i = 0;
+	while (i < p->nb_cmds)
+	{
+		execute_child(p, i);
+		i++;
 	}
 }
 
