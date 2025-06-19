@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:35 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:55:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/19 13:27:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	init_cmds(t_pipex *p, char *av[])
 	if (!p->cmds)
 	{
 		perror("malloc cmds");
+		free_pipes(p);
 		exit (1);
 	}
 	i = 0;
