@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:23:51 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 11:49:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/19 12:09:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	ft_count_words(char const *s, char c)
 		}
 		else
 		{
-			
+		
 		}
 	}
 	return (count);
