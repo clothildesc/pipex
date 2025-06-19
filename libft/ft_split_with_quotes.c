@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:23:51 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 12:09:31 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/19 13:43:39 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,20 @@ static int	is_quote(char c)
 	return (0);
 }
 
-static void	handle_quotes(char const *s, char c, int *i, int *in_word)
+static void	handle_quotes(char const *s, int *i, int *in_word)
 {
 	char	quote_type;
 	char	quote_start;
 
 	quote_type = s[*i];
 	quote_start = *i;
-	*i++;
+	(*i)++;
 	while (s[*i] && s[*i] != quote_type)
-		*i++;
+		(*i)++;
 	if (s[*i])
 	{
-		*i++;
+		(*i)++;
 		*in_word = 0;
-		return (1);
 	}
 	else
 	{
@@ -42,21 +41,22 @@ static void	handle_quotes(char const *s, char c, int *i, int *in_word)
 	}
 }
 
-static int	handle_regular_char(char const *s, int *i, int *in_word, char c)
+static int	handle_regular_char(char const *s, char c, int *i, int *in_word)
 {
 	if (c != s[*i] && !*in_word)
 	{
 		*in_word = 1;
-		*i++;
+		(*i)++;
 		return (1);
 	}
-	else if (c == s[i])
+	else if (c == s[*i])
 	{
-		in_word = 0;
-		i++;
+		*in_word = 0;
+		(*i)++;
 	}
 	else
-		i++;
+		(*i)++;
+	return (0);
 }
 
 static int	ft_count_words(char const *s, char c)
@@ -72,13 +72,11 @@ static int	ft_count_words(char const *s, char c)
 	{
 		if (is_quote(s[i]))
 		{
-			handle_quotes(s, s[i], &i, &in_word);
+			handle_quotes(s, &i, &in_word);
 			count += 1;
 		}
 		else
-		{
-		
-		}
+			count += handle_regular_char(s, c, &i, &in_word);
 	}
 	return (count);
 }
