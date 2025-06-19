@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 17:27:34 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/19 10:12:47 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ void	create_dup(t_pipex *p, int i)
 	close_pipes(p);
 }
 
+void	cmd_not_found(char **args)
+{
+	ft_putstr_fd("command not found : ", 2);
+	ft_putstr_fd(args[0], 2);
+	ft_putstr_fd("\n", 2);
+	free_tab_chars(args);
+	exit(127);
+}
+
 void	execute_child(t_pipex *p, int i)
 {
 	pid_t	pid;
@@ -63,13 +72,13 @@ void	execute_child(t_pipex *p, int i)
 		create_dup(p, i);
 		args = get_args(p->cmds[i]);
 		if (!args)
-			free_struct_and_exit(p);
+			exit(1);
 		cmd_path = get_path(p->envp, args[0]);
 		if (!cmd_path)
-			return (free_tab_chars(args), free_struct_and_exit(p));
+			cmd_not_found(args);
 		execve(cmd_path, args, p->envp);
 		perror("execve");
-		return (free(cmd_path), free_tab_chars(args), free_struct_and_exit(p));
+		return (free(cmd_path), free_tab_chars(args), exit(126));
 	}
 	p->pids[i] = pid;
 }
