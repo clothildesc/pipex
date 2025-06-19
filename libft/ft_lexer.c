@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 16:23:48 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/19 16:33:03 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@ typedef enum e_state
 	STATE_SINGLE_QUOTE,
 	STATE_DOUBLE_QUOTE
 }	t_state;
+
+typedef	enum e_char_type
+{
+	CHAR_NORMAL,
+	CHAR_SPACE,
+	CHAR_SINGLE_QUOTE,
+	CHAR_DOUBLE_QUOTE
+}	t_char_type;
+
+typedef struct s_lexer
+{
+	t_state	state;
+	t_list	*tmp_token;
+	t_list	*tokens;
+}
 
 static void	add_char(t_list **tmp_token, const char *c)
 {
