@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:35 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 13:27:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 18:38:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ void	init_cmds(t_pipex *p, char *av[])
 	p->cmds[i] = NULL;
 }
 
+void	init_pids(t_pipex *p)
+{
+	p->pids = malloc(sizeof(pid_t) * p->nb_cmds);
+	if (!p->pids)
+	{
+		perror("pids malloc");
+		free_struct_and_exit(p);
+	}
+}
+
 void	init_struct(t_pipex *p)
 {
 	p->fd_infile = -1;
@@ -82,4 +92,5 @@ void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[])
 		exit(1);
 	init_pipes(p);
 	init_cmds(p, av);
+	init_pids(p);
 }

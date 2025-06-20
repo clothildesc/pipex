@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 15:37:46 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 18:43:48 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_pipex
 //init pipex
 void	init_pipes(t_pipex *p);
 void	init_cmds(t_pipex *p, char *av[]);
+void	init_pids(t_pipex *p);
 void	init_struct(t_pipex *p);
 void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[]);
 
@@ -51,8 +52,11 @@ char	**get_args(const char *str);
 //pipe and fork
 void	close_pipes(t_pipex *p);
 void	create_dup(t_pipex *p, int i);
+void	execute_cmd(t_pipex *p, int i);
 void	execute_child(t_pipex *p, int i);
-void	pipe_and_fork(t_pipex *p);
+void	cmd_not_found(char **args);
+int		pipe_and_fork(t_pipex *p);
+int		get_exit_code(int status);
 
 //free
 void	free_tab_chars(char **tab);

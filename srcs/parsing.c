@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 17:34:59 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 18:42:17 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,32 @@ char	**get_args(const char *str)
 	if (!args)
 		return (free_tab_chars(args), NULL);
 	return (args);
+}
+
+void	cmd_not_found(char **args)
+{
+	ft_putstr_fd("command not found : ", 2);
+	ft_putstr_fd(args[0], 2);
+	ft_putstr_fd("\n", 2);
+	free_tab_chars(args);
+	exit(127);
+}
+
+void	execute_cmd(t_pipex *p, int i)
+{
+	char	**args;
+	char	*cmd_path;
+
+	args = get_args(p->cmds[i]);
+	if (!args)
+		exit(1);
+	if (ft_strchr(args[0], '/') && access(args[0], F_OK | X_OK) == 0)
+		cmd_path = args[0];
+	else
+		cmd_path = get_path(p->envp, args[0]);
+	if (!cmd_path)
+		cmd_not_found(args);
+	execve(cmd_path, args, p->envp);
+	perror("execve");
+	return (free(cmd_path), free_tab_chars(args), exit(126));
 }
