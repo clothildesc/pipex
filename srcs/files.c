@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:37:36 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:55:09 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 19:00:51 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ int	open_outfile(const char *outfile)
 	if (fd == -1)
 	{
 		perror("open outfile");
+		return (-1);
+	}
+	return (fd);
+}
+
+int	open_here_doc(const char *file)
+{
+	int	fd;
+
+	fd = open(file, O_WRONLY | O_CREAT | O_APPEND);
+	if (fd == -1)
+	{
+		perror("open stdin file");
 		return (-1);
 	}
 	return (fd);

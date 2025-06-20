@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:35 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 18:38:23 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 19:04:34 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	init_struct(t_pipex *p)
 	p->fd_infile = -1;
 	p->fd_outfile = -1;
 	p->nb_cmds = 0;
+	p->here_doc = 0;
 	p->pipes = NULL;
 	p->pids = NULL;
 	p->cmds = NULL;
@@ -86,6 +87,8 @@ void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[])
 	init_struct(p);
 	p->envp = envp;
 	p->nb_cmds = ac - 3;
+	if (ft_strncmp(av[1], "here_doc", 8) == 0)
+		p->here_doc = 1;
 	p->fd_infile = open_infile(av[1]);
 	p->fd_outfile = open_outfile(av[ac - 1]);
 	if (p->fd_infile < 0 || p->fd_outfile < 0)

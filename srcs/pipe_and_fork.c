@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 18:43:01 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 19:08:35 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,17 @@ int	get_exit_code(int status)
 		return (128 + WTERMSIG(status));
 	else
 		return (1);
+}
+
+void	handle_here_doc(t_pipex *p)
+{
+	int	pipefd[2];
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		exit (1);
+	}
 }
 
 int	pipe_and_fork(t_pipex *p)

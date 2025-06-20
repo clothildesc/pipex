@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 18:43:48 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 18:57:07 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_pipex
 	pid_t	*pids;
 	char	**cmds;
 	char	**envp;
+	int		here_doc;
 }	t_pipex;
 
 //init pipex
