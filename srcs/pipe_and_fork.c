@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 15:59:52 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 18:08:10 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,28 @@ void	cmd_not_found(char **args)
 	exit(127);
 }
 
+void	execute_cmd(t_pipex *p, int i)
+{
+	char	**args;
+	char	*cmd_path;
+
+	args = get_args(p->cmds[i]);
+	if (!args)
+		exit(1);
+	if (ft_strchr(args[0], '/') && access(args[0], F_OK | X_OK) == 0)
+		cmd_path = args[0];
+	else
+		cmd_path = get_path(p->envp, args[0]);
+	if (!cmd_path)
+		cmd_not_found(args);
+	execve(cmd_path, args, p->envp);
+	perror("execve");
+	return (free(cmd_path), free_tab_chars(args), exit(126));
+}
+
 void	execute_child(t_pipex *p, int i)
 {
 	pid_t	pid;
-	char	**args;
-	char	*cmd_path;
 
 	pid = fork();
 	if (pid == -1)
@@ -70,15 +87,7 @@ void	execute_child(t_pipex *p, int i)
 	{
 		printf("Je suis dans l'enfant indice %d | PID = %d\n", i, pid);
 		create_dup(p, i);
-		args = get_args(p->cmds[i]);
-		if (!args)
-			exit(1);
-		cmd_path = get_path(p->envp, args[0]);
-		if (!cmd_path)
-			cmd_not_found(args);
-		execve(cmd_path, args, p->envp);
-		perror("execve");
-		return (free(cmd_path), free_tab_chars(args), exit(126));
+		execute_cmd(p, i);
 	}
 	printf("PID = %d\n", pid);
 	p->pids[i] = pid;
