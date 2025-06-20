@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 11:35:49 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 12:13:23 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,12 @@ char	**ft_lexer(const char *input)
 		(lexer.pos)++;
 	}
 	finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
+	if (lexer.state != STATE_NORMAL)
+	{
+		ft_lstclear(&(lexer.lst_tokens), free);
+		write(2, "error: missing quote\n", 22);
+		return (NULL);
+	}
 	return (lst_to_array(lexer.lst_tokens));
 }
 
