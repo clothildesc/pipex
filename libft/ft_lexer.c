@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 12:13:23 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 13:47:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,27 @@ static char	**lst_to_array(t_list *lst_tokens)
 {
 	char	**tokens;
 	int		i;
+	t_list	*current;
+	t_list	*to_free;
 
 	tokens = malloc(sizeof(char *) * (ft_lstsize(lst_tokens) + 1));
 	if (!tokens)
 		return (NULL);
 	i = 0;
-	while (lst_tokens)
+	current = lst_tokens;
+	while (current)
 	{
-		tokens[i] = (char *)lst_tokens->content;
+		tokens[i] = (char *)current->content;
+		current = current->next;
 		i++;
-		lst_tokens = lst_tokens->next;
 	}
 	tokens[i] = NULL;
+	while (lst_tokens)
+	{
+		to_free = lst_tokens;
+		lst_tokens = lst_tokens->next;
+		free(to_free);
+	}
 	return (tokens);
 }
 
@@ -160,7 +169,19 @@ void	handle_normal_state(t_lexer *l)
 {
 	add_char(&(l->tmp_token), &(l->input[l->pos]));
 }
-
+int	check_if_not_normal_state(t_lexer *l)
+{
+	if (l->state != STATE_NORMAL)
+	{
+		if (l->tmp_token)
+			ft_lstclear(&(l->tmp_token), free);
+		if (l->lst_tokens)
+			ft_lstclear(&(l->lst_tokens), free);
+		write(2, "error: missing quote\n", 22);
+		return (1);
+	}
+	return (0);
+}
 
 char	**ft_lexer(const char *input)
 {
@@ -182,17 +203,13 @@ char	**ft_lexer(const char *input)
 			handle_normal_state(&lexer);
 		(lexer.pos)++;
 	}
-	finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
-	if (lexer.state != STATE_NORMAL)
-	{
-		ft_lstclear(&(lexer.lst_tokens), free);
-		write(2, "error: missing quote\n", 22);
+	if (check_if_not_normal_state(&lexer))
 		return (NULL);
-	}
+	finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
 	return (lst_to_array(lexer.lst_tokens));
 }
 
-#include <stdio.h>
+/* #include <stdio.h>
 
 int	main(int ac, char *av[])
 {
@@ -203,6 +220,8 @@ int	main(int ac, char *av[])
 	if (ac == 2)
 	{
 		array = ft_lexer(av[1]);
+		if (!array)
+			return (1);
 		while (array[i])
 		{
 			printf("%s\n", array[i]);
@@ -212,4 +231,4 @@ int	main(int ac, char *av[])
 		free(array);
 	}
 	return (0);
-}
+} */
