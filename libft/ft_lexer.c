@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 16:33:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:35:49 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef enum e_state
 	STATE_DOUBLE_QUOTE
 }	t_state;
 
-typedef	enum e_char_type
+typedef enum e_char_type
 {
 	CHAR_NORMAL,
 	CHAR_SPACE,
@@ -29,9 +29,31 @@ typedef	enum e_char_type
 
 typedef struct s_lexer
 {
-	t_state	state;
-	t_list	*tmp_token;
-	t_list	*tokens;
+	t_state		state;
+	t_list		*tmp_token;
+	t_list		*lst_tokens;
+	int			pos;
+	const char	*input;
+}	t_lexer;
+
+void	init_struct(t_lexer *l)
+{
+	l->state = STATE_NORMAL;
+	l->tmp_token = NULL;
+	l->lst_tokens = NULL;
+	l->input = NULL;
+	l->pos = 0;
+}
+
+t_char_type	classify_char_type(char c)
+{
+	if (c == ' ')
+		return (CHAR_SPACE);
+	else if (c == '\'')
+		return (CHAR_SINGLE_QUOTE);
+	else if (c == '"')
+		return (CHAR_DOUBLE_QUOTE);
+	return (CHAR_NORMAL);
 }
 
 static void	add_char(t_list **tmp_token, const char *c)
@@ -58,7 +80,7 @@ static char	*create_token(t_list *tmp_token)
 	int		i;
 
 	if (!tmp_token)
-		return ;
+		return (NULL);
 	token = malloc(sizeof(char) * (ft_lstsize(tmp_token) + 1));
 	if (!token)
 		return (NULL);
@@ -106,63 +128,64 @@ static char	**lst_to_array(t_list *lst_tokens)
 	return (tokens);
 }
 
+void	handle_single_quote_state(t_lexer *l)
+{
+	if (l->state == STATE_NORMAL)
+		l->state = STATE_SINGLE_QUOTE;
+	else if (l->state == STATE_SINGLE_QUOTE)
+		l->state = STATE_NORMAL;
+	else if (l->state == STATE_DOUBLE_QUOTE)
+		add_char(&(l->tmp_token), &(l->input[l->pos]));
+}
+
+void	handle_double_quote_state(t_lexer *l)
+{
+	if (l->state == STATE_NORMAL)
+		l->state = STATE_DOUBLE_QUOTE;
+	else if (l->state == STATE_DOUBLE_QUOTE)
+		l->state = STATE_NORMAL;
+	else if (l->state == STATE_SINGLE_QUOTE)
+		add_char(&(l->tmp_token), &(l->input[l->pos]));
+}
+
+void	handle_space_state(t_lexer *l)
+{
+	if (l->state == STATE_DOUBLE_QUOTE || l->state == STATE_SINGLE_QUOTE)
+		add_char(&(l->tmp_token), &(l->input[l->pos]));
+	else if (l->state == STATE_NORMAL)
+		finish_token(&(l->tmp_token), &(l->lst_tokens));
+}
+
+void	handle_normal_state(t_lexer *l)
+{
+	add_char(&(l->tmp_token), &(l->input[l->pos]));
+}
+
+
 char	**ft_lexer(const char *input)
 {
-	t_state	state;
-	t_list	*tmp_token;
-	t_list	*lst_tokens;
-	int		i;
+	t_lexer		lexer;
+	t_char_type	type;
 
-	i = 0;
-	state = STATE_NORMAL;
-	tmp_token = NULL;
-	lst_tokens = NULL;
-	while (input[i])
+	init_struct(&lexer);
+	lexer.input = input;
+	while (lexer.input[lexer.pos])
 	{
-		if (input[i] == '\'')
-		{
-			if (state == STATE_NORMAL)
-				state = STATE_SINGLE_QUOTE;
-			else if (state == STATE_SINGLE_QUOTE)
-				state = STATE_NORMAL;
-			else if (state == STATE_DOUBLE_QUOTE)
-				add_char(&tmp_token, &input[i]);
-		}
-		else if (input[i] == '"')
-		{
-			if (state == STATE_NORMAL)
-				state = STATE_DOUBLE_QUOTE;
-			else if (state == STATE_DOUBLE_QUOTE)
-				state = STATE_NORMAL;
-			else if (state == STATE_SINGLE_QUOTE)
-				add_char(&tmp_token, &input[i]);
-		}
-		else if (input[i] == ' ')
-		{
-			if (state == STATE_DOUBLE_QUOTE || state == STATE_SINGLE_QUOTE)
-				add_char(&tmp_token, &input[i]);
-			else if (state == STATE_NORMAL && tmp_token)
-			{
-				token = create_token(tmp_token);
-				add_token(&lst_tokens, token);
-				ft_lstclear(&tmp_token, free);
-				tmp_token = NULL;
-				token = NULL;
-			}
-		}
+		type = classify_char_type(lexer.input[lexer.pos]);
+		if (type == CHAR_SINGLE_QUOTE)
+			handle_single_quote_state(&lexer);
+		else if (type == CHAR_DOUBLE_QUOTE)
+			handle_double_quote_state(&lexer);
+		else if (type == CHAR_SPACE)
+			handle_space_state(&lexer);
 		else
-			add_char(&tmp_token, &input[i]);
-		i++;
+			handle_normal_state(&lexer);
+		(lexer.pos)++;
 	}
-	if (tmp_token)
-	{
-		token = create_token(tmp_token);
-		add_token(&lst_tokens, token);
-		ft_lstclear(&tmp_token, free);
-		tmp_token = NULL;
-	}
-	return (lst_to_array(lst_tokens));
+	finish_token(&(lexer.tmp_token), &(lexer.lst_tokens));
+	return (lst_to_array(lexer.lst_tokens));
 }
+
 #include <stdio.h>
 
 int	main(int ac, char *av[])
