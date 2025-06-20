@@ -6,10 +6,11 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 13:55:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 15:17:03 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_lexer.h"
 
 void	handle_single_quote_state(t_lexer *l)

@@ -6,10 +6,11 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 14:32:45 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 16:51:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_lexer.h"
 
 t_char_type	classify_char_type(char c)
@@ -52,7 +53,6 @@ char	*create_token(t_list *tmp_token)
 	if (!token)
 		return (NULL);
 	i = 0;
-
 	while (tmp_token)
 	{
 		token[i] = *(char *)tmp_token->content;

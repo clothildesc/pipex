@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 13:51:53 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 14:03:34 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 15:18:45 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		handle_single_quote_state(t_lexer *l);
 void		handle_double_quote_state(t_lexer *l);
 void		handle_space_state(t_lexer *l);
 void		handle_normal_state(t_lexer *l);
-void		init_struct(t_lexer *l);
+void		init_struct_lexer(t_lexer *l);
 char		**ft_lexer(const char *input);
 int			check_if_not_normal_state(t_lexer *l);
 

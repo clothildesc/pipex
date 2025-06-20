@@ -6,13 +6,14 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 13:48:19 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 14:01:33 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 16:54:43 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_lexer.h"
 
-void	init_struct(t_lexer *l)
+void	init_struct_lexer(t_lexer *l)
 {
 	l->state = STATE_NORMAL;
 	l->tmp_token = NULL;
@@ -26,7 +27,7 @@ char	**ft_lexer(const char *input)
 	t_lexer		lexer;
 	t_char_type	type;
 
-	init_struct(&lexer);
+	init_struct_lexer(&lexer);
 	lexer.input = input;
 	while (lexer.input[lexer.pos])
 	{

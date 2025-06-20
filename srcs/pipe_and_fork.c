@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/19 13:32:11 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 15:59:52 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	execute_child(t_pipex *p, int i)
 	char	**args;
 	char	*cmd_path;
 
-	printf("Je suis dans l'enfant indice %d\n", i);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -69,6 +68,7 @@ void	execute_child(t_pipex *p, int i)
 	}
 	if (pid == 0)
 	{
+		printf("Je suis dans l'enfant indice %d | PID = %d\n", i, pid);
 		create_dup(p, i);
 		args = get_args(p->cmds[i]);
 		if (!args)
@@ -80,6 +80,7 @@ void	execute_child(t_pipex *p, int i)
 		perror("execve");
 		return (free(cmd_path), free_tab_chars(args), exit(126));
 	}
+	printf("PID = %d\n", pid);
 	p->pids[i] = pid;
 }
 
@@ -93,6 +94,7 @@ void	pipe_and_fork(t_pipex *p)
 		perror("pids malloc");
 		free_struct_and_exit(p);
 	}
+	printf("Parent : creation des processus enfants\n");
 	i = 0;
 	while (i < p->nb_cmds)
 	{
@@ -100,11 +102,12 @@ void	pipe_and_fork(t_pipex *p)
 		i++;
 	}
 	close_pipes(p);
-	printf("Je suis dans le parent");
+	printf("Parent : attente des enfants\n");
 	i = 0;
 	while (i < p->nb_cmds)
 	{
 		waitpid(p->pids[i], NULL, 0);
+		printf("Parent : enfant %d termine\n", i);
 		i++;
 	}
 	close(p->fd_infile);

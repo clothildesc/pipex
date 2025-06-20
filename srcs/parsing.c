@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 17:56:47 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 16:51:04 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ char	*get_path(char *envp[], char *cmd)
 	return (path);
 }
 
-char	**get_args(char *str)
+char	**get_args(const char *str)
 {
 	char	**args;
 
-	args = ft_split(str, ' ');
+	args = ft_lexer(str);
 	if (!args)
 		return (free_tab_chars(args), NULL);
 	return (args);

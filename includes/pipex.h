@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/18 16:59:03 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/20 15:37:46 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		open_outfile(const char *outfile);
 //parsing
 char	*check_path(char **path_folders, char *cmd);
 char	*get_path(char *envp[], char *cmd);
-char	**get_args(char *str);
+char	**get_args(const char *str);
 
 //pipe and fork
 void	close_pipes(t_pipex *p);
