@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:37:36 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 19:00:51 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/22 23:37:59 by clothildesc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,17 @@ int	open_infile(const char *infile)
 	return (fd);
 }
 
-int	open_outfile(const char *outfile)
+int	open_outfile(const char *outfile, t_pipex *p)
 {
 	int	fd;
 
-	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC);
+	if (p->here_doc)
+		fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND);
+	else
+		fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC);
 	if (fd == -1)
 	{
 		perror("open outfile");
-		return (-1);
-	}
-	return (fd);
-}
-
-int	open_here_doc(const char *file)
-{
-	int	fd;
-
-	fd = open(file, O_WRONLY | O_CREAT | O_APPEND);
-	if (fd == -1)
-	{
-		perror("open stdin file");
 		return (-1);
 	}
 	return (fd);

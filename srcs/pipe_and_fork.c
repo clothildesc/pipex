@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_and_fork.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 19:08:35 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 00:04:31 by clothildesc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,34 @@ int	get_exit_code(int status)
 		return (1);
 }
 
-void	handle_here_doc(t_pipex *p)
+void	handle_here_doc(t_pipex *p, char *limiter)
 {
-	int	pipefd[2];
+	int		pipefd[2];
+	char	*line;
+	int		limiter_reached = 0;
 
 	if (pipe(pipefd) == -1)
+		return (perror("pipe"), exit (1));
+	write(1, "heredoc> ", 9);
+	while ((line = get_next_line(0)))
 	{
-		perror("pipe");
-		exit (1);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0
+			&& line[ft_strlen(limiter)] == '\n')
+		{
+			limiter_reached = 1;
+			free(line);
+			break;
+		}
+		write(pipefd[1], line, ft_strlen(line));
+		free(line);
+		write(1, "heredoc> ", 9);
 	}
+	close(pipefd[1]);
+	p->fd_infile = pipefd[0];
+	if (!limiter_reached)
+		write(2, "warning: there is no delimiter\n", 32);
+	if (line)
+		free(line);
 }
 
 int	pipe_and_fork(t_pipex *p)
@@ -104,8 +123,6 @@ int	pipe_and_fork(t_pipex *p)
 		waitpid(p->pids[i], &status, 0);
 		i++;
 	}
-	close(p->fd_infile);
-	close(p->fd_outfile);
 	free_struct_and_exit(p);
 	return (get_exit_code(status));
 }
