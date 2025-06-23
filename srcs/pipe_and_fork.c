@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 12:20:57 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:36:31 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	close_pipes(t_pipex *p)
 	i = 0;
 	while (i < p->nb_cmds - 1)
 	{
-		close(p->pipes[i][0]);
-		close(p->pipes[i][1]);
+		if (p->pipes[i][0] >= 0)
+			close(p->pipes[i][0]);
+		if (p->pipes[i][1] >= 0)
+			close(p->pipes[i][1]);
 		i++;
 	}
 }
