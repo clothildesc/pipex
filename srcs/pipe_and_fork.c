@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 11:16:32 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:20:57 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,9 @@ void	execute_child(t_pipex *p, int i)
 	}
 	if (pid == 0)
 	{
-		printf("Je suis dans l'enfant indice %d | PID = %d\n", i, pid);
 		create_dup(p, i);
 		execute_cmd(p, i);
 	}
-	printf("PID = %d\n", pid);
 	p->pids[i] = pid;
 }
 

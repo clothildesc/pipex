@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 11:12:12 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:23:52 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "../libft/libft.h"
-// a enlever
-# include <stdio.h>
 
 typedef struct s_pipex
 {
@@ -58,6 +56,7 @@ void	execute_child(t_pipex *p, int i);
 void	cmd_not_found(char **args);
 int		pipe_and_fork(t_pipex *p);
 int		get_exit_code(int status);
+void	exit_code(int code);
 
 //here_doc
 int		is_here_doc(const char *str);
@@ -68,6 +67,5 @@ void	handle_here_doc(t_pipex *p, char *limiter);
 void	free_tab_chars(char **tab);
 void	free_pipes(t_pipex *p);
 void	free_struct(t_pipex *p);
-void	exit_code(int code);
 
 #endif
