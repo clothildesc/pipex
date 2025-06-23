@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 10:35:42 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:57:00 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	cmd_not_found(char **args)
 	ft_putstr_fd(args[0], 2);
 	ft_putstr_fd("\n", 2);
 	free_tab_chars(args);
-	exit(127);
+	exit_code(127);
 }
 
 void	execute_cmd(t_pipex *p, int i)
@@ -90,7 +90,7 @@ void	execute_cmd(t_pipex *p, int i)
 	to_free = 0;
 	args = get_args(p->cmds[i]);
 	if (!args)
-		exit(1);
+		exit_code(1);
 	if (ft_strchr(args[0], '/') && access(args[0], F_OK | X_OK) == 0)
 		cmd_path = args[0];
 	else
@@ -105,5 +105,5 @@ void	execute_cmd(t_pipex *p, int i)
 	if (to_free)
 		free(cmd_path);
 	free_tab_chars(args);
-	exit(126);
+	exit_code(126);
 }

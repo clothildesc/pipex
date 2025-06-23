@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:38:06 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 10:21:36 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:31:15 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char *av[], char *envp[])
 		return (write(2, "invalid nb of arguments\n", 25), 1);
 	init_pipex(&pipex, ac, av, envp);
 	if (pipex.here_doc)
-		handle_heredoc(av[2], &pipex);
+		handle_here_doc(&pipex, av[2]);
 	code = pipe_and_fork(&pipex);
 	return (code);
 }

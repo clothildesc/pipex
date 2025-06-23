@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:52:41 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 10:08:38 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:16:32 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	execute_child(t_pipex *p, int i)
 	if (pid == -1)
 	{
 		perror("fork");
-		free_struct_and_exit(p);
+		free_struct(p);
+		exit_code(1);
 	}
 	if (pid == 0)
 	{
@@ -79,8 +80,11 @@ int	pipe_and_fork(t_pipex *p)
 {
 	int		i;
 	int		status;
+	pid_t	current_pid;
+	int		exit_code;
 
 	i = 0;
+	exit_code = 0;
 	while (i < p->nb_cmds)
 	{
 		execute_child(p, i);
@@ -90,9 +94,11 @@ int	pipe_and_fork(t_pipex *p)
 	i = 0;
 	while (i < p->nb_cmds)
 	{
-		waitpid(p->pids[i], &status, 0);
+		current_pid = waitpid(p->pids[i], &status, 0);
+		if (current_pid == p->pids[p->nb_cmds - 1])
+			exit_code = get_exit_code(status);
 		i++;
 	}
-	free_struct_and_exit(p);
-	return (get_exit_code(status));
+	free_struct(p);
+	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 10:19:44 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:12:12 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ int		get_exit_code(int status);
 
 //here_doc
 int		is_here_doc(const char *str);
+void	read_line(int *pipefd, char *limiter);
 void	handle_here_doc(t_pipex *p, char *limiter);
 
 //free
 void	free_tab_chars(char **tab);
 void	free_pipes(t_pipex *p);
-void	free_struct_and_exit(t_pipex *p);
+void	free_struct(t_pipex *p);
+void	exit_code(int code);
 
 #endif
