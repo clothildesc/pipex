@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:37:36 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/22 23:37:59 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/06/23 15:53:01 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	open_outfile(const char *outfile, t_pipex *p)
 	int	fd;
 
 	if (p->here_doc)
-		fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND);
+		fd = open(outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 	else
-		fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC);
+		fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("open outfile");

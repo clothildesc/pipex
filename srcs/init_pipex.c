@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 16:55:35 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 11:42:01 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 15:43:59 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	init_pids(t_pipex *p)
 	p->pids = malloc(sizeof(pid_t) * p->nb_cmds);
 	if (!p->pids)
 	{
-		perror("pids malloc");
+		perror("[pipex] pids malloc");
 		free_struct(p);
 		exit_code(1);
 	}
