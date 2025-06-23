@@ -6,7 +6,7 @@
 /*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:31:30 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/20 18:57:07 by cscache          ###   ########.fr       */
+/*   Updated: 2025/06/23 10:19:44 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_pipex(t_pipex *p, int ac, char *av[], char *envp[]);
 
 //files
 int		open_infile(const char *infile);
-int		open_outfile(const char *outfile);
+int		open_outfile(const char *outfile, t_pipex *p);
 
 //parsing
 char	*check_path(char **path_folders, char *cmd);
@@ -58,6 +58,10 @@ void	execute_child(t_pipex *p, int i);
 void	cmd_not_found(char **args);
 int		pipe_and_fork(t_pipex *p);
 int		get_exit_code(int status);
+
+//here_doc
+int		is_here_doc(const char *str);
+void	handle_here_doc(t_pipex *p, char *limiter);
 
 //free
 void	free_tab_chars(char **tab);

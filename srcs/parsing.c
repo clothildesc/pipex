@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 12:09:04 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/23 00:02:54 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/06/23 10:35:42 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	execute_cmd(t_pipex *p, int i)
 	execve(cmd_path, args, p->envp);
 	perror("execve");
 	if (to_free)
-		free(cmd_path)
-	return (free_tab_chars(args), exit(126));
+		free(cmd_path);
+	free_tab_chars(args);
+	exit(126);
 }

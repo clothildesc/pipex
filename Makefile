@@ -6,7 +6,7 @@
 #    By: cscache <cscache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 18:25:47 by cscache           #+#    #+#              #
-#    Updated: 2025/06/18 17:00:32 by cscache          ###   ########.fr        #
+#    Updated: 2025/06/23 10:09:54 by cscache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS = $(SRCS_DIR)/main.c \
 		$(SRCS_DIR)/parsing.c \
 		$(SRCS_DIR)/files.c \
 		$(SRCS_DIR)/pipe_and_fork.c \
+		$(SRCS_DIR)/here_doc.c \
 		$(SRCS_DIR)/free.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

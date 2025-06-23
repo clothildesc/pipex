@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clothildescache <clothildescache@studen    +#+  +:+       +#+        */
+/*   By: cscache <cscache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:38:06 by cscache           #+#    #+#             */
-/*   Updated: 2025/06/22 23:54:42 by clothildesc      ###   ########.fr       */
+/*   Updated: 2025/06/23 10:21:36 by cscache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int	main(int ac, char *av[], char *envp[])
 	t_pipex	pipex;
 	int		code;
 
-	if ((av[1] && ft_strncmp(av[1], "here_doc", 9) == 0 && ac < 6)
-		|| (av[1] && ft_strncmp(av[1], "here_doc", 9) != 0 && ac < 5))
-		return (write(2, "invalid number of arguments\n", 29), 1);
+	if ((av[1] && is_here_doc(av[1]) && ac < 6) \
+	|| (av[1] && !is_here_doc(av[1]) && ac < 5))
+		return (write(2, "invalid nb of arguments\n", 25), 1);
 	init_pipex(&pipex, ac, av, envp);
-	if (pipex.heredoc)
+	if (pipex.here_doc)
 		handle_heredoc(av[2], &pipex);
 	code = pipe_and_fork(&pipex);
 	return (code);
